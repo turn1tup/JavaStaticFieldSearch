@@ -1,0 +1,2 @@
+org/apache/catalina/connector/Request field: specialAttributes
+org/apache/catalina/core/ApplicationFilterChain field: lastServicedRequest

@@ -1,0 +1,3 @@
+org/springframework/context/support/LiveBeansView field: applicationContexts
+org/springframework/web/context/ContextLoader field: currentContextPerThread
+org/springframework/web/context/ContextLoader field: currentContext
