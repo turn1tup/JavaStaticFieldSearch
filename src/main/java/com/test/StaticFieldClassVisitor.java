@@ -17,7 +17,6 @@ import static org.objectweb.asm.Opcodes.*;
 
 public class StaticFieldClassVisitor extends ClassVisitor {
 
-
     public void Record(String data) {
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(new File(this.resultFile),true);
@@ -28,11 +27,10 @@ public class StaticFieldClassVisitor extends ClassVisitor {
         }
     }
     private String resultFile ;
-    private boolean isStatic = false;
-    private boolean isContext = false;
+//    private boolean isStatic = false;
+//    private boolean isContext = false;
     private String className ;
-    private List<String> classNames ;
-    private String field;
+    private final List<String> classNames ;
     public StaticFieldClassVisitor(String file, List<String> classNames) {
         super(ASM6);
         this.resultFile = file;
@@ -41,23 +39,17 @@ public class StaticFieldClassVisitor extends ClassVisitor {
 
     @Override
     public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-        this.isContext = false;
-        this.isStatic = false;
+        boolean hasClassName = false;
         // 忽略非静态字段
-        if (access >= ACC_STATIC && (access ^ ACC_STATIC) < access) {
-            isStatic = true;
-        }
-
-        //field = name;
-
+        boolean isStatic = access >= ACC_STATIC && (access ^ ACC_STATIC) < access;
         for (String className : classNames) {
             if (descriptor.contains(className) || (signature!=null && signature.contains(className)) ) {
-                isContext = true;
+                hasClassName = true;
                 break;
             }
         }
 
-        if (isContext && isStatic) {
+        if (hasClassName && isStatic) {
             Record(String.format("%30s field: %s",className,name));
         }
         return super.visitField(access, name, descriptor, signature, value);
@@ -66,11 +58,6 @@ public class StaticFieldClassVisitor extends ClassVisitor {
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         this.className = name;
-        //super.visit(version, access, name, signature, superName, interfaces);
     }
 
-//    @Override
-//    public void visitEnd() {
-//        super.visitEnd();
-//    }
 }

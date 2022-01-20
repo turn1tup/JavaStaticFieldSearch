@@ -21,14 +21,12 @@ public class Main {
         jarPath = "spring-boot-libs";
         father = "org/springframework/context/ApplicationContext";
         staticFieldFile = "ApplicationContext.txt";
-
         // tomcat web
   //      jarPath = "tomcat-libs";
 //        father = "javax.servlet.ServletRequest";
 //        staticFieldFile = "ServletRequest.txt";
 //        father= "org.apache.catalina.Container";
 //        staticFieldFile = "Container.txt";
-
         father = father.replaceAll("\\.", "/");
         List<String> classNames = getClassNames(jarPath, father);
 
